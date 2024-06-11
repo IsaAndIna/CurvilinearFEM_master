@@ -1,0 +1,8 @@
+output*
+*.vtu
+__pycache__/*
+articles/*
+.DS_Store
+~$*
+Figure/*
+*.pdf

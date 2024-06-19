@@ -39,27 +39,16 @@ By defining a new symbol $\Gamma^{x_i}_{y_j,y_k}$ , also known as Christoffel sy
 $\Gamma^{x_i}_{y_j,y_k} =\frac{\partial^2 x_i}{\partial y_k \partial y_j}=\frac{\partial^2 \psi_i^{-1}}{\partial y_k \partial y_j}$
 , the equation above is transformed into the next form:
 
-$$\frac{\partial \underline{e_{y_j}}}{\partial y_k} = 
-\begin{pmatrix}\Gamma^{x_1}_{y_j,y_k} & \Gamma^{x_2}_{y_j,y_k} &  ... & \Gamma^{x_n}_{y_j,y_k}   \end{pmatrix}^\top =\sum_{i\in \mathcal{N}} \Gamma^{x_i}_{y_j,y_k} \underline{e_{x_i}} .$$
+$$\frac{\partial \underline{e_{y_j}}}{\partial y_k} = \begin{pmatrix}\Gamma^{x_1}_{y_j,y_k} & \Gamma^{x_2}_{y_j,y_k} &  ... & \Gamma^{x_n}_{y_j,y_k}   \end{pmatrix}^\top =\sum_{i\in \mathcal{N}} \Gamma^{x_i}_{y_j,y_k} \underline{e_{x_i}} .$$
 
 On the other hand, the integral of an arbitraty function $\phi$ over a domain $\Omega_x$ is calculated as follows:
-$$ \int_{\Omega_x} \phi(x_1,x_2,...,x_n)dx_1dx_2...dx_n \\
-= \int_{\Omega_y} \phi(y_1,y_2,...,y_n) \left|\frac{\partial (x_1,x_2,...,x_n)}{\partial (y_1,y_2,...,y_n) } \right| dy_1dy_2...dy_n ,$$
+
+$$\int_{\Omega_x} \phi(x_1,x_2,...,x_n)dx_1dx_2...dx_n \\ = \int_{\Omega_y} \phi(y_1,y_2,...,y_n) \left|\frac{\partial (x_1,x_2,...,x_n)}{\partial (y_1,y_2,...,y_n) } \right| dy_1dy_2...dy_n ,$$
+
 where 
-$$\frac{\partial (x_1,x_2,...,x_n)}{\partial (y_1,y_2,...,y_n) } 
-= \begin{bmatrix}
-\frac{\partial x_1}{ \partial y_1} & \frac{\partial x_2}{ \partial y_1} & \dots& \frac{\partial x_n}{ \partial y_1} \\
-\frac{\partial x_1}{ \partial y_2} & \frac{\partial x_2}{ \partial y_2} & \dots& \frac{\partial x_n}{ \partial y_2} \\
-\vdots & \vdots & \ddots& \vdots \\
-\frac{\partial x_1}{ \partial y_n} & \frac{\partial x_2}{ \partial y_n} & \dots& \frac{\partial x_n}{ \partial y_n}   
-\end{bmatrix} \\
-= \begin{bmatrix}
-\frac{\partial \psi_1^{-1}}{ \partial y_1} & \frac{\partial \psi_2^{-1}}{ \partial y_1} & \dots& \frac{\partial \psi_n^{-1}}{ \partial y_1} \\
-\frac{\partial \psi_1^{-1}}{ \partial y_2} & \frac{\partial \psi_2^{-1}}{ \partial y_2} & \dots& \frac{\partial \psi_n^{-1}}{ \partial y_2} \\
-\vdots & \vdots & \ddots& \vdots \\
-\frac{\partial \psi_1^{-1}}{ \partial y_n} & \frac{\partial \psi_2^{-1}}{ \partial y_n} & \dots& \frac{\partial \psi_n^{-1}}{ \partial y_n}   
-\end{bmatrix} 
-= \mathbf{J}^x_y . $$
+
+$$\frac{\partial (x_1,x_2,...,x_n)}{\partial (y_1,y_2,...,y_n) } = \begin{bmatrix} \frac{\partial x_1}{ \partial y_1} & \frac{\partial x_2}{ \partial y_1} & \dots& \frac{\partial x_n}{ \partial y_1} \\ \frac{\partial x_1}{ \partial y_2} & \frac{\partial x_2}{ \partial y_2} & \dots& \frac{\partial x_n}{ \partial y_2} \\ \vdots & \vdots & \ddots& \vdots \\ \frac{\partial x_1}{ \partial y_n} & \frac{\partial x_2}{ \partial y_n} & \dots& \frac{\partial x_n}{ \partial y_n}   \end{bmatrix} \\ = \begin{bmatrix} \frac{\partial \psi_1^{-1}}{ \partial y_1} & \frac{\partial \psi_2^{-1}}{ \partial y_1} & \dots& \frac{\partial \psi_n^{-1}}{ \partial y_1} \\ \frac{\partial \psi_1^{-1}}{ \partial y_2} & \frac{\partial \psi_2^{-1}}{ \partial y_2} & \dots& \frac{\partial \psi_n^{-1}}{ \partial y_2} \\ \vdots & \vdots & \ddots& \vdots \\ \frac{\partial \psi_1^{-1}}{ \partial y_n} & \frac{\partial \psi_2^{-1}}{ \partial y_n} & \dots& \frac{\partial \psi_n^{-1}}{ \partial y_n}    \end{bmatrix}  = \mathbf{J}^x_y . $$
+
 $\mathbf{J}^x_y $ is also known as the Jacobian matrix of $\psi$.
 
 

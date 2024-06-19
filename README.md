@@ -59,9 +59,9 @@ $$\frac{\partial (x_1,x_2,...,x_n)}{\partial (y_1,y_2,...,y_n) } = \begin{bmatri
 $$= \begin{bmatrix} \frac{\partial \psi_1^{-1}}{ \partial y_1} & \frac{\partial \psi_2^{-1}}{ \partial y_1} & \dots& \frac{\partial \psi_n^{-1}}{ \partial y_1} \\ 
 \frac{\partial \psi_1^{-1}}{ \partial y_2} & \frac{\partial \psi_2^{-1}}{ \partial y_2} & \dots& \frac{\partial \psi_n^{-1}}{ \partial y_2} \\ 
 \vdots & \vdots & \ddots& \vdots \\ 
-\frac{\partial \psi_1^{-1}}{ \partial y_n} & \frac{\partial \psi_2^{-1}}{ \partial y_n} & \dots& \frac{\partial \psi_n^{-1}}{ \partial y_n}    \end{bmatrix}  = \mathbf{J}^x_y . $$
+\frac{\partial \psi_1^{-1}}{ \partial y_n} & \frac{\partial \psi_2^{-1}}{ \partial y_n} & \dots& \frac{\partial \psi_n^{-1}}{ \partial y_n}    \end{bmatrix}  = \mathbf{J}^x_y .$$
 
-$\mathbf{J}^x_y $ is also known as the Jacobian matrix of $\psi$.
+$\mathbf{J}^x_y$ is also known as the Jacobian matrix of $\psi$.
 
 
 ## Definition of problem
@@ -92,8 +92,8 @@ $\underline{\underline{\sigma}}$ .
 $\nabla$ 
 is the Del symbol, which can represent the gradient, the divergence or the curl of a vector, depending on the operator. In this context, 
 $\nabla \underline{v}$ 
-is a $n \times n$ matrix with $ \frac{\partial v_j }{\partial x_i } $ as its $(i,j)$ component, and $\nabla \cdot A$ 
-is a $n$ dimention vector with $\sum_{j\in \mathcal{N}} \frac{\partial A_{i,j} }{\partial x_j }$  as its $i$ th component. 
+is a $n \times n$ matrix with $\frac{\partial v_j}{\partial x_i }$ as its $(i,j)$ component, and $\nabla \cdot A$ 
+is a $n$ dimention vector with $\sum_{j\in \mathcal{N}} \frac{\partial A_{i,j} }{\partial x_j}$  as its $i$ th component. 
 
 $\mathbf{I}_n \in \mathbb{R}^{n\times n}$ 
 is an identity matrix of $n$ dimentions.

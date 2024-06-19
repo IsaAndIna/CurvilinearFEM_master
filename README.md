@@ -90,15 +90,15 @@ $$ \int_{\Omega_x} \underline{v}^\top \left( \nabla \cdot \underline{\underline{
 where $\partial\Omega_x$ is the boundary of the region $\Omega_x$, $\underline{n} $ is the normal vector of, and $\underline{t}=\underline{\underline{\sigma}} \cdot \underline{n} $ is the external force applied to the boundary  $\partial\Omega_x$ .
 Therefore, the weak form is 
 $$  \int_{\Omega_x} \left( \nabla \underline{v}\right) : \underline{\underline{\sigma}} (\underline{u})   \ dx_1dx_2...dx_n \\ 
-= \int_{\partial\Omega_x} \underline{v}^\top  \underline{t} \ ds + \int_{\Omega_x} \underline{v}^\top f \ dx_1dx_2...dx_n . $$
+= \int_{\partial\Omega_x} \underline{v}^\top  \underline{t} \ ds + \int_{\Omega_x} \underline{v}^\top f \ dx_1dx_2...dx_n , $$
+where « $:$ » operator is the sum of element-wise product.
 Note that the left side is a function of the displacement $\underline{u}$ and the right side is independent of it. 
 
 ## Derivation of the linear equation 
 
 By applying a test function $\underline{v}$ and discretizing the region appropriately, we can convert this weak form into a finite number of linear equations, s.t. $K\underline{\bar{u}} = \underline{\bar{f}} $, where $K \in \mathbb{R}^{N \times N}$, $\underline{\bar{u}},\underline{\bar{f}}\in \mathbb{R}^{N } $, $N$ is the number of test functions applied.
 
-Suppose the region $\Omega$ is discretized by a mesh of $N_E$ elements. The 
-
+Suppose the region $\Omega$ is discretized by a mesh of $N_{ele}$ elements and $N_{nod} $ nodes. Let $\underline{u}$ be described as a linear combination of shape functions $\underline{\bar{u}} $, s.t. $$\underline{\bar{u}} = \sum_{i=1}^{N_{nod}} \sum_{j \in \mathcal{N}} \bar{u_{i,j}} \phi_i \underline{e_{j}} .$$
 
 
 

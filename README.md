@@ -35,9 +35,7 @@ $$\frac{\partial \underline{e_{y_j}}}{\partial y_k} =
 \begin{pmatrix}\frac{\partial^2 x_1}{\partial y_k \partial y_j} & \frac{\partial^2 x_2}{\partial y_k \partial y_j} &  ... & \frac{\partial^2 x_n}{\partial y_k \partial y_j}   \end{pmatrix}^\top \\ = 
 \begin{pmatrix}\frac{\partial^2 \psi_1^{-1}}{\partial y_k \partial y_j} & \frac{\partial^2 \psi_2^{-1}}{\partial y_k \partial y_j} &  ... & \frac{\partial^2 \psi_n^{-1}}{\partial y_k \partial y_j}   \end{pmatrix}^\top . $$
 
-By defining a new symbol 
-$\Gamma^{x_i}_{y_j,y_k}$
-by 
+By defining a new symbol $\Gamma^{x_i}_{y_j,y_k}$ by 
 $\Gamma^{x_i}_{y_j,y_k} =\frac{\partial^2 x_i}{\partial y_k \partial y_j}=\frac{\partial^2 \psi_i^{-1}}{\partial y_k \partial y_j}$
 , also known as Christoffel symbol, the equation above is transformed into the next form:
 

@@ -12,7 +12,8 @@ $$\underline{x} = \sum_{i\in{\mathcal{N}}}  x_i\underline{e_{x_i}} \\
 
 Let $\underline{\psi}: \mathbb{R}^n \rightarrow \mathbb{R}^n$ be a coordinate transformation function. 
 Then a coordinate transformation from $\underline{x}$ to $\underline{y}$ can be described as $y_j= \psi_j  (x_1, x_2, ..., x_n)$ , where $y_i$ is the $i$ th coefficient of the linear combination of the  basis vectors, s.t. 
-$\underline{y} = \Sigma_{j\in \mathcal{N}} \ y_j\underline{e_{y_j}} $ . The $j$ th basis vector $\underline{e_{y_j}}$ of the $\underline{y}$ coordinate system can be derived by 
+$\underline{y} = \Sigma_{j\in \mathcal{N}} \ y_j\underline{e_{y_j}} .$  
+The $j$ th basis vector $\underline{e_{y_j}}$ of the $\underline{y}$ coordinate system can be derived by 
 
 $$\underline{e_{y_j}}= \frac{\partial \underline{x}  }{\partial y_j} = 
 \begin{pmatrix}\frac{\partial x_1}{\partial y_j} & \frac{\partial x_2 }{\partial y_j} & ... & \frac{\partial x_n  }{\partial y_j} \end{pmatrix}^\top

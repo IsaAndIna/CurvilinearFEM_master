@@ -98,15 +98,17 @@ is a $n$ dimention vector with $\sum_{j\in \mathcal{N}} \frac{\partial A_{i,j} }
 $\mathbf{I}_n \in \mathbb{R}^{n\times n}$ 
 is an identity matrix of $n$ dimentions.
 
-$\lambda $ and $\mu$ are the two Lamé constants, describing the mechanical property of the continuum. $\underline{f} \in \mathbb{R}^{n}$ is the external force working on the material. For example, when the density is $\rho$ and the gravity is $\underline{g} \in \mathbb{R}^{n}$, $\underline{f}=\rho \underline{g} $ .
+$\lambda$ and $\mu$ are the two Lamé constants, describing the mechanical property of the continuum. $\underline{f} \in \mathbb{R}^{n}$ is the external force working on the material. For example, when the density is $\rho$ and the gravity is $\underline{g} \in \mathbb{R}^{n}$, $\underline{f}=\rho \underline{g}$ .
 
 
 <!-- $ = \Sigma_i \frac{\partial v_i}{\partial x_i} \underline{e_i} $, where $ \underline{e_i}  $ is the unit vector in direction of the $i$ th axis on the Cartesian coordinate system. -->
 
 ## Derivation of weak form of the problem
-Let $\underline{v}\in \mathbb{R}^n $ be a test function. Then the weak form of the equilibrium equation above is described as:
+Let 
+$\underline{v} \in \mathbb{R}^n$ 
+be a test function. Then the weak form of the equilibrium equation above is described as:
 
-$$ \int_{\Omega_x} \underline{v}^\top \left( \nabla \cdot \underline{\underline{\sigma}}  + \underline{f} \right) \ dx_1dx_2...dx_n = 0 . $$ 
+$$\int_{\Omega_x} \underline{v}^\top \left( \nabla \cdot \underline{\underline{\sigma}}  + \underline{f} \right) \ dx_1dx_2...dx_n = 0 . $$ 
 
 Thus 
 
@@ -114,11 +116,11 @@ $$ \int_{\Omega_x} \underline{v}^\top \left( \nabla \cdot \underline{\underline{
 
 By integrating it by parts to the left side, we obtain:
 
-$$ \int_{\Omega_x} \underline{v}^\top \left( \nabla \cdot \underline{\underline{\sigma}}  \right) \ dx_1dx_2...dx_n \\
+$$\int_{\Omega_x} \underline{v}^\top \left( \nabla \cdot \underline{\underline{\sigma}}  \right) \ dx_1dx_2...dx_n \\
 = \int_{\partial\Omega_x} \underline{v}^\top \left(  \underline{\underline{\sigma}} \cdot \underline{n}  \right) \ ds - \int_{\Omega_x} \left( \nabla \underline{v}\right) : \underline{\underline{\sigma}}   \ dx_1dx_2...dx_n \\
 =\int_{\partial\Omega_x} \underline{v}^\top  \underline{t} \ ds - \int_{\Omega_x} \left( \nabla \underline{v}\right) : \underline{\underline{\sigma}}   \ dx_1dx_2...dx_n, $$ 
 
-where $\partial\Omega_x$ is the boundary of the region $\Omega_x$, $\underline{n} $ is the normal vector of, and $\underline{t}=\underline{\underline{\sigma}} \cdot \underline{n} $ is the external force applied to the boundary  $\partial\Omega_x$ .
+where $\partial\Omega_x$ is the boundary of the region $\Omega_x$, $\underline{n}$ is the normal vector of, and $\underline{t}=\underline{\underline{\sigma}} \cdot \underline{n}$ is the external force applied to the boundary  $\partial\Omega_x$ .
 Therefore, the weak form is 
 
 $$  \int_{\Omega_x} \left( \nabla \underline{v}\right) : \underline{\underline{\sigma}} (\underline{u})   \ dx_1dx_2...dx_n \\ 

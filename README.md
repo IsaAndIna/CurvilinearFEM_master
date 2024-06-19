@@ -31,7 +31,7 @@ $$\underline{e_{y_j}}=
 
 Under Cartesian coordinate system, the basis vectors are constant, in other words, don't change from point to point, while in general, they depend on the point. Thus, we can calculate the partial derivative of $\underline{e_{y_j}}$ as follows:
 
-$$ \frac{\partial \underline{e_{y_j}}}{\partial y_k} = 
+$$\frac{\partial \underline{e_{y_j}}}{\partial y_k} = 
 \begin{pmatrix}\frac{\partial^2 x_1}{\partial y_k \partial y_j} & \frac{\partial^2 x_2}{\partial y_k \partial y_j} &  ... & \frac{\partial^2 x_n}{\partial y_k \partial y_j}   \end{pmatrix}^\top \\ = 
 \begin{pmatrix}\frac{\partial^2 \psi_1^{-1}}{\partial y_k \partial y_j} & \frac{\partial^2 \psi_2^{-1}}{\partial y_k \partial y_j} &  ... & \frac{\partial^2 \psi_n^{-1}}{\partial y_k \partial y_j}   \end{pmatrix}^\top . $$
 
@@ -42,7 +42,7 @@ $\Gamma^{x_i}_{y_j,y_k} =\frac{\partial^2 x_i}{\partial y_k \partial y_j}=\frac{
 , also known as Christoffel symbol, the equation above is transformed into the next form:
 
 $$\frac{\partial \underline{e_{y_j}}}{\partial y_k} = 
-\begin{pmatrix}\Gamma^{x_1}_{y_j,y_k} & \Gamma^{x_2}_{y_j,y_k} &  ... & \Gamma^{x_n}_{y_j,y_k}   \end{pmatrix}^\top =\sum_{i\in \mathcal{N}} \Gamma^{x_i}_{y_j,y_k} \underline{e_{x_i}} . $$
+\begin{pmatrix}\Gamma^{x_1}_{y_j,y_k} & \Gamma^{x_2}_{y_j,y_k} &  ... & \Gamma^{x_n}_{y_j,y_k}   \end{pmatrix}^\top =\sum_{i\in \mathcal{N}} \Gamma^{x_i}_{y_j,y_k} \underline{e_{x_i}} .$$
 
 On the other hand, the integral of an arbitraty function $\phi$ over a domain $\Omega_x$ is calculated as follows:
 $$ \int_{\Omega_x} \phi(x_1,x_2,...,x_n)dx_1dx_2...dx_n \\

@@ -47,8 +47,9 @@ $$\int_{\Omega_x} \phi(x_1,x_2,...,x_n)dx_1dx_2...dx_n \\ = \int_{\Omega_y} \phi
 
 where 
 
-$$\frac{\partial (x_1,x_2,...,x_n)}{\partial (y_1,y_2,...,y_n) } = \begin{bmatrix} \frac{\partial x_1}{ \partial y_1} & \frac{\partial x_2}{ \partial y_1} & \dots& \frac{\partial x_n}{ \partial y_1} \\ \frac{\partial x_1}{ \partial y_2} & \frac{\partial x_2}{ \partial y_2} & \dots& \frac{\partial x_n}{ \partial y_2} \\ \vdots & \vdots & \ddots& \vdots \\ \frac{\partial x_1}{ \partial y_n} & \frac{\partial x_2}{ \partial y_n} & \dots& \frac{\partial x_n}{ \partial y_n}   \end{bmatrix} \\
-= \begin{bmatrix} \frac{\partial \psi_1^{-1}}{ \partial y_1} & \frac{\partial \psi_2^{-1}}{ \partial y_1} & \dots& \frac{\partial \psi_n^{-1}}{ \partial y_1} \\ 
+$$\frac{\partial (x_1,x_2,...,x_n)}{\partial (y_1,y_2,...,y_n) } = \begin{bmatrix} \frac{\partial x_1}{ \partial y_1} & \frac{\partial x_2}{ \partial y_1} & \dots& \frac{\partial x_n}{ \partial y_1} \\ \frac{\partial x_1}{ \partial y_2} & \frac{\partial x_2}{ \partial y_2} & \dots& \frac{\partial x_n}{ \partial y_2} \\ \vdots & \vdots & \ddots& \vdots \\ \frac{\partial x_1}{ \partial y_n} & \frac{\partial x_2}{ \partial y_n} & \dots& \frac{\partial x_n}{ \partial y_n}   \end{bmatrix}$$
+
+$$= \begin{bmatrix} \frac{\partial \psi_1^{-1}}{ \partial y_1} & \frac{\partial \psi_2^{-1}}{ \partial y_1} & \dots& \frac{\partial \psi_n^{-1}}{ \partial y_1} \\ 
 \frac{\partial \psi_1^{-1}}{ \partial y_2} & \frac{\partial \psi_2^{-1}}{ \partial y_2} & \dots& \frac{\partial \psi_n^{-1}}{ \partial y_2} \\ 
 \vdots & \vdots & \ddots& \vdots \\ 
 \frac{\partial \psi_1^{-1}}{ \partial y_n} & \frac{\partial \psi_2^{-1}}{ \partial y_n} & \dots& \frac{\partial \psi_n^{-1}}{ \partial y_n}    \end{bmatrix}  = \mathbf{J}^x_y . $$

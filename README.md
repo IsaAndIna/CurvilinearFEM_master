@@ -6,6 +6,7 @@ In this section, we discuss the mathematical formulation of the finite element m
 
 ## Definition of curvilinear coordinate system
 Suppose a cartesian coordinate system with $n$ axis, described with $n$ basis vectors $\underline{e_{x_i}}  $, where $i \in \mathcal{N} = \lbrace 1,2,..., n \rbrace $. Then, a vector $\underline{x}$ on this coordinate system is described as 
+
 $$\underline{x} = \sum_{i\in{\mathcal{N}}}  x_i\underline{e_{x_i}} \\ 
 = \begin{pmatrix}x_1 & x_2 & ... & x_n\end{pmatrix}^\top .$$
 

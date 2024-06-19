@@ -133,7 +133,7 @@ By applying a test function $\underline{v}$ and discretizing the region appropri
 $K\underline{\bar{u}} = \underline{\bar{f}} $, where $K \in \mathbb{R}^{N \times N}$, $\underline{\bar{u}},\underline{\bar{f}}\in \mathbb{R}^{N } $
 , $N$ is the number of test functions applied.
 
-Suppose the region $\Omega$ is discretized by a mesh of $N_{ele}$ elements and $N_{nod} $ nodes. Let $\underline{u}$ be described as a linear combination of shape functions $\underline{\bar{u}} $, s.t. 
+Suppose the region $\Omega$ is discretized by a mesh of $N_{ele}$ elements and $N_{nod}$ nodes. Let $\underline{u}$ be described as a linear combination of shape functions $\underline{\bar{u}} $, s.t. 
 
 $$\underline{\bar{u}} = \sum_{i=1}^{N_{nod}} \sum_{j \in \mathcal{N}} \bar{u_{i,j}} \phi_i \underline{e_{j}} .$$
 

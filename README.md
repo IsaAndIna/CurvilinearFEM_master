@@ -19,21 +19,28 @@ $$\underline{e_{y_j}}= \frac{\partial \underline{x}  }{\partial y_j} =
 \begin{pmatrix}\frac{\partial x_1}{\partial y_j} & \frac{\partial x_2 }{\partial y_j} & ... & \frac{\partial x_n  }{\partial y_j} \end{pmatrix}^\top
 =\sum_{i\in \mathcal{N}} \frac{\partial x_i  }{\partial y_j} \underline{e_{x_i}} .$$
 
-Note that this expression describes the basis vector of the $\underline{y}$ coordinate system, as a linear combination of the $n$ basis vectors of the original Cartesian coordinate system {$\underline{e_{x_i}} \ | \ i \in \mathcal{N}$}. Let $\psi^{-1}: \mathbb{R}^n \rightarrow \mathbb{R}^n$ be the inverse coordinate transformation function of $\psi$ , then,
-$$
-x_i= \psi_i^{-1} (y_1, y_2, ..., y_n)
-$$
+Note that this expression describes the basis vector of the $\underline{y}$ coordinate system, as a linear combination of the $n$ basis vectors of the original Cartesian coordinate system 
+$\langle \underline{e_{x_i}} \ | \ i \in \mathcal{N}\rangle$. 
+Let $\psi^{-1}: \mathbb{R}^n \rightarrow \mathbb{R}^n$ be the inverse coordinate transformation function of $\psi$ , then,
+
+$$x_i= \psi_i^{-1} (y_1, y_2, ..., y_n)$$
 
 $$\underline{e_{y_j}}= 
 \begin{pmatrix}\frac{\partial  \psi_1^{-1}}{\partial y_j} & \frac{\partial  \psi_2^{-1} }{\partial y_j} & ... & \frac{\partial  \psi_n^{-1} }{\partial y_j} \end{pmatrix}^\top
 =\sum  \frac{\partial  \psi_i^{-1}  }{\partial y_j} \underline{e_{x_i}} .$$
 
 Under Cartesian coordinate system, the basis vectors are constant, in other words, don't change from point to point, while in general, they depend on the point. Thus, we can calculate the partial derivative of $\underline{e_{y_j}}$ as follows:
+
 $$ \frac{\partial \underline{e_{y_j}}}{\partial y_k} = 
 \begin{pmatrix}\frac{\partial^2 x_1}{\partial y_k \partial y_j} & \frac{\partial^2 x_2}{\partial y_k \partial y_j} &  ... & \frac{\partial^2 x_n}{\partial y_k \partial y_j}   \end{pmatrix}^\top \\ = 
 \begin{pmatrix}\frac{\partial^2 \psi_1^{-1}}{\partial y_k \partial y_j} & \frac{\partial^2 \psi_2^{-1}}{\partial y_k \partial y_j} &  ... & \frac{\partial^2 \psi_n^{-1}}{\partial y_k \partial y_j}   \end{pmatrix}^\top . $$
 
-By defining a new symbol $\Gamma^{x_i}_{y_j,y_k}$  by $\Gamma^{x_i}_{y_j,y_k} =\frac{\partial^2 x_i}{\partial y_k \partial y_j}=\frac{\partial^2 \psi_i^{-1}}{\partial y_k \partial y_j}$, also known as Christoffel symbol, the equation above is transformed into the next form:
+By defining a new symbol 
+$\Gamma^{x_i}_{y_j,y_k}$
+by 
+$\Gamma^{x_i}_{y_j,y_k} =\frac{\partial^2 x_i}{\partial y_k \partial y_j}=\frac{\partial^2 \psi_i^{-1}}{\partial y_k \partial y_j}$
+, also known as Christoffel symbol, the equation above is transformed into the next form:
+
 $$\frac{\partial \underline{e_{y_j}}}{\partial y_k} = 
 \begin{pmatrix}\Gamma^{x_1}_{y_j,y_k} & \Gamma^{x_2}_{y_j,y_k} &  ... & \Gamma^{x_n}_{y_j,y_k}   \end{pmatrix}^\top =\sum_{i\in \mathcal{N}} \Gamma^{x_i}_{y_j,y_k} \underline{e_{x_i}} . $$
 

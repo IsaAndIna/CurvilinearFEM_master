@@ -1,5 +1,7 @@
-# CurvilinearFEM_master
-This git repository is aimed to manage the documents used for my Master research, including source codes, research notes and records.
+# CurvilinearFEM
+This git repository is aimed to manage the documents used for my master research on Finite Element Method on Curvilinear Coordinate System, including source codes, research notes and records.
+
+Isaya Inafuku. June 22, 2024.
 
 # Formulation of Finite Element Method on Curvilinear Coordinate System for Linear Elasticity Problem.
 In this section, we discuss the mathematical formulation of the finite element method on curvilinear coordinate system. Especially, we will apply it in a case of Linear Elasticity problem.
@@ -75,7 +77,7 @@ $$\underline{\underline{\sigma}} = \lambda \ tr( \underline{\underline{\epsilon}
 
 Strain-displacement: 
 
-$$\underline{\underline{\epsilon}} = \frac{1}{2} \left( \nabla \underline{u} + \left( \nabla \underline{u} \right)^\top \right)$$
+$$\underline{\underline{\epsilon}}(u) = \frac{1}{2} \left( \nabla \underline{u} + \left( \nabla \underline{u} \right)^\top \right)$$
 
 Equilibrium : 
 
@@ -114,7 +116,7 @@ $$\int_{\Omega_x} \underline{v}^\top \left( \nabla \cdot \underline{\underline{\
 
 Thus 
 
-$$ \int_{\Omega_x} \underline{v}^\top \left( \nabla \cdot \underline{\underline{\sigma}}  \right) \ dx_1dx_2...dx_n = - \int_{\Omega_x} \underline{v}^\top f \ dx_1dx_2...dx_n . $$  
+$$ \int_{\Omega_x} \underline{v}^\top \left( \nabla \cdot \underline{\underline{\sigma}}  \right) \ dx_1dx_2...dx_n = - \int_{\Omega_x} \underline{v}^\top \underline{f} \ dx_1dx_2...dx_n . $$  
 
 By integrating it by parts to the left side, we obtain:
 
@@ -122,27 +124,50 @@ $$\int_{\Omega_x} \underline{v}^\top \left( \nabla \cdot \underline{\underline{\
 = \int_{\partial\Omega_x} \underline{v}^\top \left(  \underline{\underline{\sigma}} \cdot \underline{n}  \right) \ ds - \int_{\Omega_x} \left( \nabla \underline{v}\right) : \underline{\underline{\sigma}}   \ dx_1dx_2...dx_n \\
 =\int_{\partial\Omega_x} \underline{v}^\top  \underline{t} \ ds - \int_{\Omega_x} \left( \nabla \underline{v}\right) : \underline{\underline{\sigma}}   \ dx_1dx_2...dx_n, $$ 
 
-where $\partial\Omega_x$ is the boundary of the region $\Omega_x$, $\underline{n}$ is the normal vector of, and $\underline{t}=\underline{\underline{\sigma}} \cdot \underline{n}$ is the external force applied to the boundary  $\partial\Omega_x$ .
+where $\partial\Omega_x$ is the boundary of the region $\Omega_x$, $\underline{n}$ is the normal vector of, $\underline{t}=\underline{\underline{\sigma}} \cdot \underline{n}$ is the external force applied to the boundary  $\partial\Omega_x$ , and « $:$ » operator is the sum of element-wise product. Considering that $\underline{\underline{\sigma}}$ is a symetric matrix, we can convert $\left( \nabla \underline{v}\right) : \underline{\underline{\sigma}}$ in the flloing way:
+
+$$ \left( \nabla \underline{v}\right) : \underline{\underline{\sigma}} = \frac{1}{2} \left( \nabla \underline{v} + \left( \nabla \underline{v} \right)^\top \right) : \underline{\underline{\sigma}} + \frac{1}{2} \left( \nabla \underline{v} - \left( \nabla \underline{v} \right)^\top \right) : \underline{\underline{\sigma}} = \underline{\underline{\epsilon}}(\underline{v}) : \underline{\underline{\sigma}} ,$$
+Note that $\nabla \underline{v} - \left( \nabla \underline{v} \right)^\top$ is an alternating sign matrix with its diagonal components 0, and its element-wise product sum with a symetric matrix returns 0.
 Therefore, the weak form is 
 
-$$  \int_{\Omega_x} \left( \nabla \underline{v}\right) : \underline{\underline{\sigma}} (\underline{u})   \ dx_1dx_2...dx_n \\ 
-= \int_{\partial\Omega_x} \underline{v}^\top  \underline{t} \ ds + \int_{\Omega_x} \underline{v}^\top f \ dx_1dx_2...dx_n , $$
+$$ \int_{\Omega_x} \underline{\underline{\epsilon}} \left(  \underline{v}\right) : \underline{\underline{\sigma}} (\underline{u})   \ dx_1dx_2...dx_n \\ 
+= \int_{\partial\Omega_x} \underline{v}^\top  \underline{t} \ ds + \int_{\Omega_x} \underline{v}^\top \underline{f} \ dx_1dx_2...dx_n . $$
 
-where « $:$ » operator is the sum of element-wise product.
 Note that the left side is a function of the displacement $\underline{u}$ and the right side is independent of it. 
 
 ## Derivation of the linear equation 
 
 By applying a test function $\underline{v}$ and discretizing the region appropriately, we can convert this weak form into a finite number of linear equations, s.t. 
-$K\underline{\hat{u}} = \underline{\hat{f}} $, where $K \in \mathbb{R}^{N \times N}$, $\underline{\hat{u}},\underline{\hat{f}}\in \mathbb{R}^{N}$
+$K\underline{\hat{u}} = \underline{\hat{f}} $, where 
+$K \in \mathbb{R}^{N \times N}$, $\underline{\hat{u}},\underline{\hat{f}}\in \mathbb{R}^{N}$
 , $N$ is the number of test functions applied.
 
 Suppose the region $\Omega$ is discretized by a mesh of $N_{ele}$ elements and $N_{nod}$ nodes. Let $\underline{u}$ be described as a linear combination of shape functions, s.t. 
 
 $$\underline{\hat{u}} = \sum_{i=1}^{N_{nod}} \sum_{j \in \mathcal{N}} \hat{u}_{i,j} \phi_i \underline{e_{j}} ,$$
 
-where $\phi_i$ is the shape function of the $i$ th node, and $\underline{e_{j}}$ is the basis function in the direction of the $j$ th axis of an coordinate system.
+where $\phi_i$ is the shape function of the $i$ th node, $\underline{e_{j}}$ is the basis function in the direction of the $j$ th axis of an coordinate system, and $\hat{u}_{i,j}$ is an unknown scalar value of the displacement of the $i$ the node in the direction of $j$ the axis. Then the strain tensor is 
 
+$$\underline{\underline{\epsilon}}(\hat{\underline{u}}) = \frac{1}{2} \left( \nabla \hat{\underline{u}} + \left( \nabla \hat{\underline{u}} \right)^\top \right)$$
+
+$$=\sum_{i=1}^{N_{nod}} \sum_{j \in \mathcal{N}} \hat{u}_{i,j}  \frac{1}{2} \left( \nabla \left( \phi_i \underline{e_{j}} \right) + \left( \nabla \left( \phi_i \underline{e_{j}} \right) \right)^\top \right)$$
+
+$$=\sum_{i=1}^{N_{nod}} \sum_{j \in \mathcal{N}} \hat{u}_{i,j} \ \underline{\underline{\epsilon}}(\phi_i \underline{e_{j}}) \ ,$$
+
+and the stress tensor is 
+
+$$\underline{\underline{\sigma}} (\underline{\underline{\epsilon}}(\hat{\underline{u}})) =  \lambda \, tr( \underline{\underline{\epsilon}}(\hat{\underline{u}}) ) \mathbf{I}_n + 2\mu \underline{\underline{\epsilon}}(\hat{\underline{u}})$$
+
+$$=\sum_{i=1}^{N_{nod}} \sum_{j \in \mathcal{N}} \hat{u}_{i,j} \, \lambda \, tr(\underline{\underline{\epsilon}}(\phi_i \underline{e_{j}}) ) \mathbf{I}_n + 2\mu \, \underline{\underline{\epsilon}}(\phi_i \underline{e_{j}})= \sum_{i=1}^{N_{nod}} \sum_{j \in \mathcal{N}} \hat{u}_{i,j} \, \underline{\underline{\sigma}} (\underline{\underline{\epsilon}}(\phi_i \underline{e_{j}})) .$$
+
+In the same way, let the test function $\underline{v}$ be a shape function, s.t.
+
+$$\underline{v} = \phi_{i'} \underline{e_{j'}} .$$
+
+Then, by substituting the stress tensor and the strain tensor, the weak form is described as:
+
+$$ \sum_{i=1}^{N_{nod}} \sum_{j \in \mathcal{N}} \hat{u}_{i,j} \int_{\Omega_x} \underline{\underline{\epsilon}}(\phi_{i'} \underline{e_{j'}}) : \underline{\underline{\sigma}} (\underline{\underline{\epsilon}}(\phi_i \underline{e_{j}}))   \ dx_1dx_2...dx_n \\ 
+= \int_{\partial\Omega_x} (\phi_{i'} \underline{e_{j'}})^\top  \underline{t} \, ds + \int_{\Omega_x} (\phi_{i'} \underline{e_{j'}})^\top \underline{f} \, dx_1dx_2...dx_n . $$
 
 
 

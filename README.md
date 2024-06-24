@@ -126,12 +126,13 @@ $$\int_{\Omega_x} \underline{v}^\top \left( \nabla \cdot \underline{\underline{\
 
 where $\partial\Omega_x$ is the boundary of the region $\Omega_x$, $\underline{n}$ is the normal vector of, $\underline{t}=\underline{\underline{\sigma}} \cdot \underline{n}$ is the external force applied to the boundary  $\partial\Omega_x$ , and « $:$ » operator is the sum of element-wise product. Considering that $\underline{\underline{\sigma}}$ is a symetric matrix, we can convert $\left( \nabla \underline{v}\right) : \underline{\underline{\sigma}}$ in the flloing way:
 
-$$ \left( \nabla \underline{v}\right) : \underline{\underline{\sigma}} = \frac{1}{2} \left( \nabla \underline{v} + \left( \nabla \underline{v} \right)^\top \right) : \underline{\underline{\sigma}} + \frac{1}{2} \left( \nabla \underline{v} - \left( \nabla \underline{v} \right)^\top \right) : \underline{\underline{\sigma}} = \underline{\underline{\epsilon}}(\underline{v}) : \underline{\underline{\sigma}} ,$$
+$$\left( \nabla \underline{v}\right) : \underline{\underline{\sigma}} = \frac{1}{2} \left( \nabla \underline{v} + \left( \nabla \underline{v} \right)^\top \right) : \underline{\underline{\sigma}} + \frac{1}{2} \left( \nabla \underline{v} - \left( \nabla \underline{v} \right)^\top \right) : \underline{\underline{\sigma}} = \underline{\underline{\epsilon}}(\underline{v}) : \underline{\underline{\sigma}} , $$
+
+
 Note that $\nabla \underline{v} - \left( \nabla \underline{v} \right)^\top$ is an alternating sign matrix with its diagonal components 0, and its element-wise product sum with a symetric matrix returns 0.
 Therefore, the weak form is 
 
-$$ \int_{\Omega_x} \underline{\underline{\epsilon}} \left(  \underline{v}\right) : \underline{\underline{\sigma}} (\underline{u})   \ dx_1dx_2...dx_n \\ 
-= \int_{\partial\Omega_x} \underline{v}^\top  \underline{t} \ ds + \int_{\Omega_x} \underline{v}^\top \underline{f} \ dx_1dx_2...dx_n . $$
+$$ \int_{\Omega_x} \underline{\underline{\epsilon}} \left(  \underline{v}\right) : \underline{\underline{\sigma}} (\underline{u})   \ dx_1dx_2...dx_n = \int_{\partial\Omega_x} \underline{v}^\top  \underline{t} \ ds + \int_{\Omega_x} \underline{v}^\top \underline{f} \ dx_1dx_2...dx_n . $$
 
 Note that the left side is a function of the displacement $\underline{u}$ and the right side is independent of it. 
 
@@ -166,8 +167,7 @@ $$\underline{v} = \phi_{i'} \underline{e_{j'}} .$$
 
 Then, by substituting the stress tensor and the strain tensor, the weak form is described as:
 
-$$ \sum_{i=1}^{N_{nod}} \sum_{j \in \mathcal{N}} \hat{u}_{i,j} \int_{\Omega_x} \underline{\underline{\epsilon}}(\phi_{i'} \underline{e_{j'}}) : \underline{\underline{\sigma}} (\underline{\underline{\epsilon}}(\phi_i \underline{e_{j}}))   \ dx_1dx_2...dx_n \\ 
-= \int_{\partial\Omega_x} (\phi_{i'} \underline{e_{j'}})^\top  \underline{t} \, ds + \int_{\Omega_x} (\phi_{i'} \underline{e_{j'}})^\top \underline{f} \, dx_1dx_2...dx_n . $$
+$$\sum_{i=1}^{N_{nod}} \sum_{j \in \mathcal{N}} \hat{u}_{i,j} \int_{\Omega_x} \underline{\underline{\epsilon}}(\phi_{i'} \underline{e_{j'}}) : \underline{\underline{\sigma}} (\underline{\underline{\epsilon}}(\phi_i \underline{e_{j}}))   \ dx_1dx_2...dx_n \\ = \int_{\partial\Omega_x} (\phi_{i'} \underline{e_{j'}})^\top  \underline{t} \, ds + \int_{\Omega_x} (\phi_{i'} \underline{e_{j'}})^\top \underline{f} \, dx_1dx_2...dx_n . $$
 
 
 

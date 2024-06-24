@@ -870,8 +870,8 @@ def main_vector(N_divisions:int=5,alpha=None):
 
     # Definition of mesh on xy coordinates.
     W, H = 1.0, 1.0
-    Nx_divisions = 15
-    Ny_divisions = 15
+    Nx_divisions = N_divisions
+    Ny_divisions = N_divisions
 
     Nx = Nx_divisions + 1
     Ny = Ny_divisions + 1
@@ -1173,35 +1173,32 @@ def main_vector(N_divisions:int=5,alpha=None):
     ax[1].legend()
     plt.show()
 
+    if N_divisions<=20:
+        #create the mesh on xy and st plane
+        fig, ax = plt.subplots(1,2,figsize=(10,5))
 
-    #create the mesh on xy and st plane
-    fig, ax = plt.subplots(1,2,figsize=(10,5))
+        for i in range(N_ele):
+            node_ids=cny[i]
+            #print(node_ids)
+            for indeces in [(0,1),(1,3),(2,3),(0,2)]:
+                #print(node_ids[indeces])
+                ax[0].plot(xy_coor[node_ids[indeces,],0],xy_coor[node_ids[indeces,],1],c='black')
+                ax[1].plot(st_coor[node_ids[indeces,],0],st_coor[node_ids[indeces,],1],c='black')
+        # set the title 
+        ax[0].set_title(f'Coordinate system "{alpha.name}" on cartesian')
+        ax[1].set_title(f'Coordinate system "{alpha.name}" on st coordinates')
+        #fix the aspect ratio
+        plt.gca().set_aspect('equal', adjustable='box')
+        # set the limit [0,1]^2
+        ax[0].set_xlim(0,1)
+        ax[0].set_ylim(0,1)
+        plt.tight_layout()
+        plt.savefig(f'Figure/coor_shape_{alpha.name}_{N_divisions}.png')
+        plt.show()
 
-    for i in range(N_ele):
-        node_ids=cny[i]
-        #print(node_ids)
-        for indeces in [(0,1),(1,3),(2,3),(0,2)]:
-            #print(node_ids[indeces])
-            ax[0].plot(xy_coor[node_ids[indeces,],0],xy_coor[node_ids[indeces,],1],c='black')
-            ax[1].plot(st_coor[node_ids[indeces,],0],st_coor[node_ids[indeces,],1],c='black')
-            
-
-
-    # set the title 
-    ax[0].set_title(f'Coordinate system "{alpha.name}" on cartesian')
-    ax[1].set_title(f'Coordinate system "{alpha.name}" on st coordinates')
-    #fix the aspect ratio
-    plt.gca().set_aspect('equal', adjustable='box')
-    # set the limit [0,1]^2
-    ax[0].set_xlim(0,1)
-    ax[0].set_ylim(0,1)
-    plt.tight_layout()
-    plt.savefig(f'coor_shape_{alpha.name}.png')
-    plt.show()
-
-    with open("output_torch.txt", "a") as file:
+    with open("output_vector.txt", "a") as file:
         # write the N, alpha.name, RMSE in csv format
-        file.write(f"{N_nodes},{N_divisions},{alpha.name},{RMSE:0.8f}\n")
+        file.write(f"{N_nodes},{N_divisions},{alpha.name},{RMSE:0.16f}\n")
 
 
 

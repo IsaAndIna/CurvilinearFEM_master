@@ -390,7 +390,7 @@ def main_original(N_divisions:int=5,alpha=None):
         # write the N, alpha.name, RMSE in csv format
         file.write(f"{N_nodes},{alpha.name},{RMSE:0.8f}\n")
 
-class custom_function_2d_torch:
+class custom_function_2d_vector_torch:
     def __init__(self, 
                  function, # (s,t)=f(x,y) e.g. lambda x:[torch.tensor(x[0]**3,dtype=torch.float32,requires_grad=True),
                            #                       torch.tensor(x[1]**2,dtype=torch.float32,requires_grad=True)]
@@ -476,6 +476,39 @@ class custom_function_2d_torch:
             
         self.jacobian=jacobian
         return jacobian
+
+
+class custom_function_2d_vector:
+    def __init__(self, 
+                 function, # (s,t)=f(x,y)
+                 prime, # [[ds/dx,ds/dy],[dt/dx,dt/dy]]
+                 inverse, # (x,y)=f_inv(s,t)
+                 Christoffel_symbols, # Chrstoffel symbols ([[[Γ^s_ss,Γ^t_ss],[Γ^s_st,Γ^t_st]],[[Γ^s_ts,Γ^t_ts],[Γ^s_tt,Γ^t_tt]]])
+                 name : str=""):
+        
+        
+        for st in [(0,0),(0,1),(1,0),(1,1)]:
+            st_temp=torch.tensor(st,dtype=torch.float32)
+            f=function(st_temp)
+            inv=inverse(st_temp)
+            assert type(f) is list or type(f) is  np.ndarray , "Function must turn list."
+            assert len(f) ==2, "Function must turn list of size 2."
+            assert type(inv) is list or type(f) is  np.ndarray, "The inverse must turn tuple."
+            assert len(inv) ==2, "The inverse must turn tuple of size 2."
+        for i in np.linspace(0,1,5):
+            for j in np.linspace(0,1,5):
+
+                f_inv=inverse(torch.tensor(function(torch.tensor((i,j)))))
+                assert (f_inv[0]-i)**2<0.00001, "The inverse is not correct"
+                assert (f_inv[1]-j)**2<0.00001, "The inverse is not correct"
+        
+
+        self.function = function
+        self.inverse = inverse
+        self.prime = prime
+        self.Christoffel_symbols = Christoffel_symbols
+        self.name = name
+
 
 def main_vector_torch(N_divisions:int=5,alpha=None):
     if alpha is None:
@@ -891,133 +924,287 @@ def main_vector(N_divisions:int=5,alpha=None):
     N=lambda zeta,eta: np.array([(1-zeta)*(1-eta),  zeta*(1-eta),(1-zeta)*eta,  zeta*eta])
     N_derivatives=lambda zeta,eta: np.array( [ [eta-1,zeta-1],[1-eta,-zeta],[-eta,1-zeta],[eta,zeta]])
 
-K=np.zeros((N_nodes*2,N_nodes*2))
-f_vector=np.zeros(N_nodes*2)
+    
 
-K_row=np.empty((N_ele*(N_nodes_e*2)**2),dtype=int)
-K_col=np.empty((N_ele*(N_nodes_e*2)**2),dtype=int)
-K_values=np.empty((N_ele*(N_nodes_e*2)**2),dtype=float)
+    K=np.zeros((N_nodes*2,N_nodes*2))
+    f_vector=np.zeros(N_nodes*2)
 
-for i_y in range(Ny_divisions):
-    for i_x in range(Nx_divisions):
-        i_ele=i_y*Nx_divisions+i_x
+    K_row=np.empty((N_ele*(N_nodes_e*2)**2),dtype=int)
+    K_col=np.empty((N_ele*(N_nodes_e*2)**2),dtype=int)
+    K_values=np.empty((N_ele*(N_nodes_e*2)**2),dtype=float)
 
-        # Element 
-        node_ids= cny[i_ele]
-        node_dummy_ids= cny_dummy[i_ele]
-        
-        # Element coordinates
-        node_coordinates = st_coor[node_ids]
+    for i_y in range(Ny_divisions):
+        for i_x in range(Nx_divisions):
+            i_ele=i_y*Nx_divisions+i_x
 
-        
-        K_e = np.zeros((N_nodes_e*2,N_nodes_e*2))
-        f_e = np.zeros(N_nodes_e*2)
-        for i_zeta_gauss in range(N_gauss_points):
-            for i_eta_gauss in range(N_gauss_points):
-                zeta_gauss = gauss_points[i_zeta_gauss]
-                eta_gauss = gauss_points[i_eta_gauss]
+            # Element 
+            node_ids= cny[i_ele]
+            node_dummy_ids= cny_dummy[i_ele]
+            
+            # Element coordinates
+            node_coordinates = st_coor[node_ids]
 
-                N_st=N(zeta_gauss,eta_gauss)
+            
+            K_e = np.zeros((N_nodes_e*2,N_nodes_e*2))
+            f_e = np.zeros(N_nodes_e*2)
+            for i_zeta_gauss in range(N_gauss_points):
+                for i_eta_gauss in range(N_gauss_points):
+                    zeta_gauss = gauss_points[i_zeta_gauss]
+                    eta_gauss = gauss_points[i_eta_gauss]
 
-                s=(node_coordinates[:,0]*N_st).sum()
-                t=(node_coordinates[:,1]*N_st).sum()
+                    N_st=N(zeta_gauss,eta_gauss)
 
-                #prepare collection of variables
-                K_temp = np.zeros((N_nodes_e*2,N_nodes_e*2))
-                F_temp = np.zeros(N_nodes_e*2)
+                    s=(node_coordinates[:,0]*N_st).sum()
+                    t=(node_coordinates[:,1]*N_st).sum()
 
-                # Jacobian # 
-                J = alpha.prime(alpha.inverse((s,t))) # J^st_xy
-                basis_vector_st = np.linalg.inv(J) # e_s,e_t
-                #print(basis_vector_st)
-                inv_det_J=np.linalg.det(basis_vector_st)
+                    #prepare collection of variables
+                    K_temp = np.zeros((N_nodes_e*2,N_nodes_e*2))
+                    F_temp = np.zeros(N_nodes_e*2)
+
+                    # Jacobian # 
+                    J = alpha.prime(alpha.inverse((s,t))) # J^st_xy
+                    basis_vector_st = np.linalg.inv(J) # e_s,e_t
+                    #print(basis_vector_st)
+                    inv_det_J=np.linalg.det(basis_vector_st)
+                    
+                    #Christoffel symbols
+                    Gamma = alpha.Christoffel_symbols((s,t))
+
+                    #N_local
+                    N_derivatives_st=N_derivatives(zeta_gauss,eta_gauss)
+                    J2=np.linalg.inv(N_derivatives_st.T@node_coordinates)
+                    
+                    #First, gather the epsilons.
+                    epsilon_v = np.zeros((N_nodes_e*2,2,2))
+                    for i_node in range(N_nodes_e):
+                        for j_index in range(2):# j_index = 0(s), 1(t)
+                            #                 N_i * Gamma^l_jk (k=s,t, l=x,y)
+                            epsilon_v_temp = N_st[i_node] * Gamma[j_index,:,:]
+                            #         J^(zeta,eta)_(s,t) [ ∂N_i/∂zeta, ∂N_i/∂eta].T @ [(e_j)x, (e_j)y]
+                            epsilon_v_temp += J2@N_derivatives_st[i_node,:,None] @ basis_vector_st[j_index,None,:]
+                            epsilon_v_temp = J@epsilon_v_temp
+                            epsilon_v[i_node*2+j_index,:,:] = (epsilon_v_temp+epsilon_v_temp.T)*0.5
+                    
+                        
+                    sigma_u = np.zeros((N_nodes_e*2,2,2))
+                    for i_node in range(N_nodes_e):
+                        for j_index in range(2):#j_index=0(s),1(t)
+                            sigma_u[i_node*2+j_index,:,:] = \
+                                Lame_lambda*np.trace(epsilon_v[i_node*2+j_index,:,:])*np.eye(2)+\
+                                2*Lame_mu*epsilon_v[i_node*2+j_index,:,:]
+                    
+                    for i_node in range(N_nodes_e*2):
+                        for i_node_2 in range(N_nodes_e*2):
+                            K_temp[i_node,i_node_2] = np.sum(sigma_u[i_node,:,:]*epsilon_v[i_node_2,:,:])
+                    K_e += K_temp*gauss_weights[i_zeta_gauss]*gauss_weights[i_eta_gauss]*d_x*d_y#*inv_det_J
                 
-                #Christoffel symbols
-                Gamma = alpha.Christoffel_symbols((s,t))
+                    force_st = basis_vector_st @ force# 2x2, 2x1 -> 2x1 
+                    for i_node in range(N_nodes_e):
+                        F_temp[i_node*2:i_node*2+2] = N_st[i_node]*force_st
+                        # for j_index in range(2):
+                        #     F_temp[i_node*2+j_index] = N_st[i_node]*force_st[j_index]
+                    f_e += F_temp*gauss_weights[i_zeta_gauss]*gauss_weights[i_eta_gauss]*d_x*d_y#*inv_det_J
+                    
+            indeces=np.zeros(N_nodes_e*2,dtype=int)
+            indeces[0:N_nodes_e*2:2]=node_ids*2
+            indeces[1:N_nodes_e*2:2]=node_ids*2+1
+            indeces[0:N_nodes_e*2:2]=node_dummy_ids*2
+            indeces[1:N_nodes_e*2:2]=node_dummy_ids*2+1
 
-                #N_local
-                N_derivatives_st=N_derivatives(zeta_gauss,eta_gauss)
-                J2=np.linalg.inv(N_derivatives_st.T@node_coordinates)
-                
-                #First, gather the epsilons.
-                epsilon_v = np.zeros((N_nodes_e*2,2,2))
-                for i_node in range(N_nodes_e):
-                    for j_index in range(2):# j_index = 0(s), 1(t)
-                        #                 N_i * Gamma^l_jk (k=s,t, l=x,y)
-                        epsilon_v_temp = N_st[i_node] * Gamma[j_index,:,:]
-                        #         J^(zeta,eta)_(s,t) [ ∂N_i/∂zeta, ∂N_i/∂eta].T @ [(e_j)x, (e_j)y]
-                        epsilon_v_temp += J2@N_derivatives_st[i_node,:,None] @ basis_vector_st[j_index,None,:]
-                        epsilon_v_temp = J@epsilon_v_temp
-                        epsilon_v[i_node*2+j_index,:,:] = (epsilon_v_temp+epsilon_v_temp.T)*0.5
-                
-                      
-                sigma_u = np.zeros((N_nodes_e*2,2,2))
-                for i_node in range(N_nodes_e):
-                    for j_index in range(2):#j_index=0(s),1(t)
-                        sigma_u[i_node*2+j_index,:,:] = \
-                            Lame_lambda*np.trace(epsilon_v[i_node*2+j_index,:,:])*np.eye(2)+\
-                            2*Lame_mu*epsilon_v[i_node*2+j_index,:,:]
-                
-                for i_node in range(N_nodes_e*2):
-                    for i_node_2 in range(N_nodes_e*2):
-                        K_temp[i_node,i_node_2] = np.sum(sigma_u[i_node,:,:]*epsilon_v[i_node_2,:,:])
-                K_e += K_temp*gauss_weights[i_zeta_gauss]*gauss_weights[i_eta_gauss]*d_x*d_y#*inv_det_J
-             
-                force_st = basis_vector_st @ force# 2x2, 2x1 -> 2x1 
-                for i_node in range(N_nodes_e):
-                    F_temp[i_node*2:i_node*2+2] = N_st[i_node]*force_st
-                    # for j_index in range(2):
-                    #     F_temp[i_node*2+j_index] = N_st[i_node]*force_st[j_index]
-                f_e += F_temp*gauss_weights[i_zeta_gauss]*gauss_weights[i_eta_gauss]*d_x*d_y#*inv_det_J
-                
-        indeces=np.zeros(N_nodes_e*2,dtype=int)
-        indeces[0:N_nodes_e*2:2]=node_ids*2
-        indeces[1:N_nodes_e*2:2]=node_ids*2+1
-        indeces[0:N_nodes_e*2:2]=node_dummy_ids*2
-        indeces[1:N_nodes_e*2:2]=node_dummy_ids*2+1
+            f_vector[indeces]+=f_e
 
-        f_vector[indeces]+=f_e
+            i_ele_start=(i_x+i_y*Nx_divisions)*(N_nodes_e*2)**2
+            for i in range(N_nodes_e*2):
+                for j in range(N_nodes_e*2):
+                    K_values[i_ele_start+i*(N_nodes_e*2)+j] = K_e[i,j]
+                    K_row[i_ele_start+i*(N_nodes_e*2)+j]    = indeces[i]
+                    K_col[i_ele_start+i*(N_nodes_e*2)+j]    = indeces[j]
 
-        i_ele_start=(i_x+i_y*Nx_divisions)*(N_nodes_e*2)**2
-        for i in range(N_nodes_e*2):
-            for j in range(N_nodes_e*2):
-                K_values[i_ele_start+i*(N_nodes_e*2)+j] = K_e[i,j]
-                K_row[i_ele_start+i*(N_nodes_e*2)+j]    = indeces[i]
-                K_col[i_ele_start+i*(N_nodes_e*2)+j]    = indeces[j]
+    K=coo_matrix((K_values, (K_row, K_col)), shape=(N_nodes*2, N_nodes*2)).tocsr()
+    #K,f_vector
 
-K=coo_matrix((K_values, (K_row, K_col)), shape=(N_nodes*2, N_nodes*2)).tocsr()
-#K,f_vector
+    N_dofs=N_nodes*2
 
-class custom_function_2d:
-    def __init__(self, 
-                 function, # (s,t)=f(x,y)
-                 prime, # [[ds/dx,ds/dy],[dt/dx,dt/dy]]
-                 inverse, # (x,y)=f_inv(s,t)
-                 Christoffel_symbols, # Chrstoffel symbols ([[[Γ^s_ss,Γ^t_ss],[Γ^s_st,Γ^t_st]],[[Γ^s_ts,Γ^t_ts],[Γ^s_tt,Γ^t_tt]]])
-                 name : str=""):
+    #Apply boundary conditions
+    #u_known_index=np.zeros(Nt*2,dtype=int)
+    u_value=np.zeros(N_dofs,dtype=float)
+    u_BC=np.zeros(N_dofs,dtype=int)
+
+    for i in range(1,Ny):
+        # Fix the left side (fix x displacement)
+        u_value[i*Nx*2]=0
+        u_BC[i*Nx*2]=-1
+
+        #Fix the right side (fix x displacement)
+        u_value[(i+1)*Nx*2-2]=0
+        u_BC[(i+1)*Nx*2-2]=-1
+
+    # Fix the bottom side (fix x and y displacement)
+    for i in range(Nx):
+        u_value[i*2]=0
+        u_value[i*2+1]=0
+        u_BC[i*2]=-1
+        u_BC[i*2+1]=-1
+
+    # Define cyclic boundary
+
+    for i in range(1,Ny):
+        #Fix the right side (fix y displacement as cyclic boundary)
+        u_BC[(i+1)*Nx*2-1]=-1
+
+    N_known=-np.sum(u_BC)
+    N_unknown=N_dofs-N_known
+
+    count=0
+    for i in range(N_dofs):
+        if u_BC[i]!=-1:
+            u_BC[i]=count
+            count+=1
+
+    #A=np.zeros((N_unknown, N_unknown))
+
+    # A_row=np.empty(N_unknown, dtype=int)
+    # A_col=np.empty(N_unknown, dtype=int)
+    # A_values=np.empty(N_unknown, dtype=float)
+    A_row=[]
+    A_col=[]
+    A_values=[]
+
+    b=np.zeros(N_unknown)
+
+    for ind in range(N_dofs):
+        i=u_BC[ind]
+        if i==-1:
+            continue
+        b[i]=f_vector[ind]
+        for ptr in range(K.indptr[ind],K.indptr[ind+1]):
+            i2=K.indices[ptr]
+            if u_BC[i2]!=-1:
+                if K.data[ptr]==0.0:
+                    continue
+                A_values.append(K.data[ptr])
+                A_row.append(i)
+                A_col.append(u_BC[i2])
+            else:
+                b[i]-=K.data[ptr]*u_value[i2]
         
-        
-        for st in [(0,0),(0,1),(1,0),(1,1)]:
-            st_temp=torch.tensor(st,dtype=torch.float32)
-            f=function(st_temp)
-            inv=inverse(st_temp)
-            assert type(f) is list, "Function must turn list."
-            assert len(f) ==2, "Function must turn list of size 2."
-            assert type(inv) is list, "The inverse must turn tuple."
-            assert len(inv) ==2, "The inverse must turn tuple of size 2."
-        for i in np.linspace(0,1,5):
-            for j in np.linspace(0,1,5):
+    A=coo_matrix((A_values, (A_row, A_col)), shape=(N_unknown, N_unknown)).tocsr()
+    u_unknown_value=spsolve(A,b)
+    #u_value=np.zeros(Ns*Nt*2)
+    #u_value[u_known_index]=u_known_value
+    u_value[u_BC!=-1]=u_unknown_value
 
-                f_inv=inverse(torch.tensor(function(torch.tensor((i,j)))))
-                assert (f_inv[0]-i)**2<0.00001, "The inverse is not correct"
-                assert (f_inv[1]-j)**2<0.00001, "The inverse is not correct"
-        
+    # update boundary displacements
+    for i in range(1,Ny):
+        #Fix the right side (fix y displacement as cyclic boundary)
+        u_value[(i+1)*Nx*2-1]=u_value[(i)*Nx*2+1]
+    #u_value
 
-        self.function = function
-        self.inverse = inverse
-        self.prime = prime
-        self.Christoffel_symbols = Christoffel_symbols
-        self.name = name
+    f_analytical=lambda x,y: -1/(Lame_lambda+2*Lame_mu)*force[1]*(0.5*y**2-H*y)
+    u_analytical=np.zeros(N_dofs)
+    u_analytical[1::2]=f_analytical(xy_coor[:,0],xy_coor[:,1])
+    #u_analytical
+
+    # adjust the u_value depending the local basis vector.
+    e_basis_length=np.zeros((N_nodes,2))
+    for i in range(Ny) :
+        for j in range(Nx):
+            J=alpha.prime(xy_coor[i*Nx+j,:])
+            e_basis_length[i*Nx+j,:]=np.linalg.norm(np.linalg.inv(J),axis=0)
+
+    u_value_xy=u_value*e_basis_length.flatten()
+
+    SE=0.0
+    for i_y in range(Ny_divisions):
+        for i_x in range(Nx_divisions):
+            i_ele=i_y*Nx_divisions+i_x
+
+            # Element 
+            node_ids= cny[i_ele]
+            
+            # Element coordinates
+            node_coordinates = st_coor[node_ids]
+
+            e_basis=np.zeros((N_nodes_e,2,2))
+            for i,node_id in enumerate(node_ids):
+                e_basis[i,:,:]=np.linalg.inv(alpha.prime(xy_coor[node_id,:]))
+            
+
+            indeces=np.zeros(N_nodes_e*2,dtype=int)
+            indeces[0:N_nodes_e*2:2]=node_ids*2
+            indeces[1:N_nodes_e*2:2]=node_ids*2+1
+
+            u_values_local=u_value[indeces].reshape((4,2))
+
+            SE_local=0.0
+            for i_zeta_gauss in range(N_gauss_points):
+                for i_eta_gauss in range(N_gauss_points):
+                    zeta_gauss = gauss_points[i_zeta_gauss]
+                    eta_gauss = gauss_points[i_eta_gauss]
+
+                    N_st=N(zeta_gauss,eta_gauss)
+                    u_local=np.einsum('ij,i,ijk->k',u_values_local,N_st,e_basis)
+                    #print(u_local)
+
+                    s=(node_coordinates[:,0]*N_st).sum()
+                    t=(node_coordinates[:,1]*N_st).sum()
+                    xy=alpha.inverse((s,t))
+                    u_analytical_local=np.array([0,f_analytical(xy[0],xy[1])])
+                    #print(u_analytical_local)
+                    SE_local+=((u_local[0]-u_analytical_local[0])**2+(u_local[1]-u_analytical_local[1])**2)*gauss_weights[i_zeta_gauss]*gauss_weights[i_eta_gauss]
+            SE+=SE_local*d_x*d_y
+
+    RMSE=np.sqrt(SE/(W*H))
+    RMSE
+
+    du=u_value_xy-u_analytical
+    # plot u_value and u_analytical
+    fig, ax = plt.subplots(1,2,figsize=(10,5))
+    ax[0].scatter(xy_coor[:,1],u_value_xy[1::2],label='FEM')
+    ax[0].plot(xy_coor[:,1],u_analytical[1::2],label='Analytical')
+    ax[0].set_xlabel('y')
+    ax[0].set_ylabel('u')
+    ax[0].legend()
+
+    # plot u_value and u_analytical
+    ax[1].plot(xy_coor[:,1],du[1::2],label='error')
+    ax[1].set_xlabel('y')
+    ax[1].set_ylabel('u')
+    ax[1].legend()
+    plt.show()
+
+
+    #create the mesh on xy and st plane
+    fig, ax = plt.subplots(1,2,figsize=(10,5))
+
+    for i in range(N_ele):
+        node_ids=cny[i]
+        #print(node_ids)
+        for indeces in [(0,1),(1,3),(2,3),(0,2)]:
+            #print(node_ids[indeces])
+            ax[0].plot(xy_coor[node_ids[indeces,],0],xy_coor[node_ids[indeces,],1],c='black')
+            ax[1].plot(st_coor[node_ids[indeces,],0],st_coor[node_ids[indeces,],1],c='black')
+            
+
+
+    # set the title 
+    ax[0].set_title(f'Coordinate system "{alpha.name}" on cartesian')
+    ax[1].set_title(f'Coordinate system "{alpha.name}" on st coordinates')
+    #fix the aspect ratio
+    plt.gca().set_aspect('equal', adjustable='box')
+    # set the limit [0,1]^2
+    ax[0].set_xlim(0,1)
+    ax[0].set_ylim(0,1)
+    plt.tight_layout()
+    plt.savefig(f'coor_shape_{alpha.name}.png')
+    plt.show()
+
+    with open("output_torch.txt", "a") as file:
+        # write the N, alpha.name, RMSE in csv format
+        file.write(f"{N_nodes},{N_divisions},{alpha.name},{RMSE:0.8f}\n")
+
+
+
 
 
 def main():

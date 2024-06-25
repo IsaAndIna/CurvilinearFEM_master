@@ -47,11 +47,11 @@ $$\frac{\partial \underline{e_{y_j}}}{\partial y_k} = \begin{pmatrix}\Gamma^{x_1
 
 $$=\sum_{i\in \mathcal{N}} \Gamma^{x_i}_{y_j,y_k} \underline{e_{x_i}} .$$
 
-On the other hand, the integral of an arbitraty function $\phi$ over a domain $\Omega_x$ is calculated as follows:
+On the other hand, the integral of an arbitraty function $\xi$ over a domain $\Omega_x$ is calculated as follows:
 
-$$\int_{\Omega_x} \phi(x_1,x_2,...,x_n)dx_1dx_2...dx_n$$ 
+$$\int_{\Omega_x} \xi(x_1,x_2,...,x_n)dx_1dx_2...dx_n$$ 
 
-$$= \int_{\Omega_y} \phi(y_1,y_2,...,y_n) \left|\frac{\partial (x_1,x_2,...,x_n)}{\partial (y_1,y_2,...,y_n) } \right| dy_1dy_2...dy_n ,$$
+$$= \int_{\Omega_y} \xi(y_1,y_2,...,y_n) \left|\frac{\partial (x_1,x_2,...,x_n)}{\partial (y_1,y_2,...,y_n) } \right| dy_1dy_2...dy_n ,$$
 
 where 
 
@@ -81,7 +81,7 @@ $$\underline{\underline{\epsilon}}(u) = \frac{1}{2} \left( \nabla \underline{u} 
 
 Equilibrium : 
 
-$$\nabla \cdot \underline{\underline{\sigma}}  + \underline{f}= \underline{0}$$
+$$\nabla \cdot \underline{\underline{\sigma}}  + \underline{\textrm{f}}= \underline{0}$$
 
 Note that 
 $\underline{\underline{\sigma}} \in \mathbb{R}^{n\times n}$ 
@@ -102,7 +102,7 @@ is a $n$ dimention vector with $\sum_{j\in \mathcal{N}} \frac{\partial A_{i,j} }
 $\mathbf{I}_n \in \mathbb{R}^{n\times n}$ 
 is an identity matrix of $n$ dimentions.
 
-$\lambda$ and $\mu$ are the two Lamé constants, describing the mechanical property of the continuum. $\underline{f} \in \mathbb{R}^{n}$ is the external force working on the material. For example, when the density is $\rho$ and the gravity is $\underline{g} \in \mathbb{R}^{n}$, $\underline{f}=\rho \underline{g}$ .
+$\lambda$ and $\mu$ are the two Lamé constants, describing the mechanical property of the continuum. $\underline{\textrm{f}} \in \mathbb{R}^{n}$ is the external force working on the material. For example, when the density is $\rho$ and the gravity is $\underline{g} \in \mathbb{R}^{n}$, $\underline{\textrm{f}}=\rho \underline{g}$ .
 
 
 <!-- $ = \Sigma_i \frac{\partial v_i}{\partial x_i} \underline{e_i} $, where $ \underline{e_i}  $ is the unit vector in direction of the $i$ th axis on the Cartesian coordinate system. -->
@@ -112,11 +112,11 @@ Let
 $\underline{v} \in \mathbb{R}^n$ 
 be a test function. Then the weak form of the equilibrium equation above is described as:
 
-$$\int_{\Omega_x} \underline{v}^\top \left( \nabla \cdot \underline{\underline{\sigma}}  + \underline{f} \right) \ dx_1dx_2...dx_n = 0 . $$ 
+$$\int_{\Omega_x} \underline{v}^\top \left( \nabla \cdot \underline{\underline{\sigma}}  + \underline{\textrm{f}} \right) \ dx_1dx_2...dx_n = 0 . $$ 
 
 Thus 
 
-$$ \int_{\Omega_x} \underline{v}^\top \left( \nabla \cdot \underline{\underline{\sigma}}  \right) \ dx_1dx_2...dx_n = - \int_{\Omega_x} \underline{v}^\top \underline{f} \ dx_1dx_2...dx_n . $$  
+$$ \int_{\Omega_x} \underline{v}^\top \left( \nabla \cdot \underline{\underline{\sigma}}  \right) \ dx_1dx_2...dx_n = - \int_{\Omega_x} \underline{v}^\top \underline{\textrm{f}} \ dx_1dx_2...dx_n . $$  
 
 By integrating it by parts to the left side, we obtain:
 
@@ -132,15 +132,15 @@ $$\left( \nabla \underline{v}\right) : \underline{\underline{\sigma}} = \frac{1}
 Note that $\nabla \underline{v} - \left( \nabla \underline{v} \right)^\top$ is an alternating sign matrix with its diagonal components 0, and its element-wise product sum with a symetric matrix returns 0.
 Therefore, the weak form is 
 
-$$ \int_{\Omega_x} \underline{\underline{\epsilon}} \left(  \underline{v}\right) : \underline{\underline{\sigma}} (\underline{u})   \ dx_1dx_2...dx_n = \int_{\partial\Omega_x} \underline{v}^\top  \underline{t} \ ds + \int_{\Omega_x} \underline{v}^\top \underline{f} \ dx_1dx_2...dx_n . $$
+$$ \int_{\Omega_x} \underline{\underline{\epsilon}} \left(  \underline{v}\right) : \underline{\underline{\sigma}} (\underline{u})   \ dx_1dx_2...dx_n = \int_{\partial\Omega_x} \underline{v}^\top  \underline{t} \ ds + \int_{\Omega_x} \underline{v}^\top \underline{\textrm{f}} \ dx_1dx_2...dx_n . $$
 
 Note that the left side is a function of the displacement $\underline{u}$ and the right side is independent of it. 
 
 ## Derivation of the linear equation 
 
 By applying a test function $\underline{v}$ and discretizing the region appropriately, we can convert this weak form into a finite number of linear equations, s.t. 
-$K\underline{\hat{u}} = \underline{\hat{f}} $, where 
-$K \in \mathbb{R}^{N \times N}$, $\underline{\hat{u}},\underline{\hat{f}}\in \mathbb{R}^{N}$
+$K\underline{\hat{u}} = \underline{\hat{\textrm{f}}} $, where 
+$K \in \mathbb{R}^{N \times N}$, $\underline{\hat{u}},\underline{\hat{\textrm{f}}}\in \mathbb{R}^{N}$
 , $N$ is the number of test functions applied.
 
 Suppose the region $\Omega$ is discretized by a mesh of $N_{ele}$ elements and $N_{nod}$ nodes. Let $\underline{u}$ be described as a linear combination of shape functions, s.t. 
@@ -167,7 +167,38 @@ $$\underline{v} = \phi_{i'} \underline{e_{j'}} .$$
 
 Then, by substituting the stress tensor and the strain tensor, the weak form is described as:
 
-$$\sum_{i=1}^{N_{nod}} \sum_{j \in \mathcal{N}} \hat{u}_{i,j} \int_{\Omega_x} \underline{\underline{\epsilon}}(\phi_{i'} \underline{e_{j'}}) : \underline{\underline{\sigma}} (\underline{\underline{\epsilon}}(\phi_i \underline{e_{j}}))   \ dx_1dx_2...dx_n \\ = \int_{\partial\Omega_x} (\phi_{i'} \underline{e_{j'}})^\top  \underline{t} \, ds + \int_{\Omega_x} (\phi_{i'} \underline{e_{j'}})^\top \underline{f} \, dx_1dx_2...dx_n . $$
+$$\sum_{i=1}^{N_{nod}} \sum_{j \in \mathcal{N}} \hat{u}_{i,j} \int_{\Omega_x} \underline{\underline{\epsilon}}(\phi_{i'} \underline{e_{j'}}) : \underline{\underline{\sigma}} (\underline{\underline{\epsilon}}(\phi_i \underline{e_{j}}))   \ dx_1dx_2...dx_n \\ = \int_{\partial\Omega_x} (\phi_{i'} \underline{e_{j'}})^\top  \underline{t} \, ds + \int_{\Omega_x} (\phi_{i'} \underline{e_{j'}})^\top \underline{\textrm{f}} \, dx_1dx_2...dx_n . $$
 
+## Numerical Integration
+In case an arbitrary function $f(x)$ cannot be analytically integrated, its integration $\int f(x) dx$ is calculated by numerical integration, by approximating the integral in the following way:
+
+$$\int_a^b f(x) dx  = \sum_{i=1}^n w_i f(x_i) ,$$
+
+where $x_i$ is the integration point and  $w_i$ is the weight for this point. When $a=-1$ and $b=1$, a major method, Gauss–Legendre quadrature, chooses the $x_i$ and $w_i$ meeting the following equations:
+
+$$P_n(x_i)=0, w_i= \frac{2}{(1-x_i^2) \left[ P'_n (x_i)\right]^2} .$$
+
+
+## Calculation of displacement tensor
+Let the shape function be defined on $\underline{y}$ coordinates ($\phi_i=\phi_i(y_1,y_2,...,y_n)$ and $\underline{e_{j}}=\underline{e_{y_j}} $).
+As explained above, the displacement $\underline{\underline{\epsilon}}(\phi_{i} \underline{e_{y_j}})$ is calculated by:
+
+$$\underline{\underline{\epsilon}}(\phi_{i} \underline{e_{y_j}}) = \frac{1}{2} \left( \nabla_{\underline{x}} \left( \phi_{i} \underline{e_{y_j}} \right)  + \left( \nabla_{\underline{x}} \left( \phi_{i} \underline{e_{y_j}} \right) \right)^\top \right).$$
+
+Considering that $\phi_i$ is calculated on $\underline{y}$ coordinates, we substitute the $\nabla_{\underline{x}}$ operator by $\nabla_{\underline{x}} =J_{\underline{x}}^{\underline{y}} \nabla_{\underline{y}}$, where
+
+$$J_{\underline{x}}^{\underline{y}} = \begin{bmatrix}\frac{\partial y_1}{\partial x_1} & \frac{\partial y_2}{\partial x_1} &  ... & \frac{\partial y_n}{\partial x_1}  \\ \frac{\partial y_1}{\partial x_2} & \frac{\partial y_2}{\partial x_2} &  ... & \frac{\partial y_n}{ \partial x_2}  \\ \vdots & \vdots & \ddots& \vdots \\ \frac{\partial y_1}{\partial x_n} & \frac{\partial y_2}{\partial x_n} &  ... & \frac{\partial y_n}{ \partial x_n}  \\ \end{bmatrix} $$
+
+By applying derivation by part, we obtain $\nabla \left( \phi_{i} \underline{e_{y_j}} \right) =  \left(\nabla \phi_{i}  \right) \underline{e_{y_j}} + \phi_{i}  \left( \nabla  \underline{e_{y_j}} \right) $, where
+
+$$\left(\nabla \phi_{i}  \right) \underline{e_{y_j}}= \begin{bmatrix} \frac{\partial \phi_{i}}{ \partial y_1} \\\frac{\partial \phi_{i}}{ \partial y_2}  \\ \vdots  \\ \frac{\partial \phi_{i}}{ \partial y_n}   \end{bmatrix} \underline{e_{y_j}} = \begin{bmatrix} \frac{\partial \phi_i}{ \partial y_1}[e_{y_j}]_{x_1} & \frac{\partial \phi_i}{ \partial y_1}[e_{y_j}]_{x_2} & \dots& \frac{\partial \phi_i}{ \partial y_1}[e_{y_j}]_{x_n} \\ 
+\frac{\partial \phi_i}{ \partial y_2}[e_{y_j}]_{x_1} & \frac{\partial \phi_i}{ \partial y_2}[e_{y_j}]_{x_2} & \dots& \frac{\partial \phi_i}{ \partial y_2}[e_{y_j}]_{x_n} \\ 
+\vdots & \vdots & \ddots& \vdots \\ 
+\frac{\partial \phi_i}{ \partial y_n}[e_{y_j}]_{x_1} & \frac{\partial \phi_i}{ \partial y_n}[e_{y_j}]_{x_2} & \dots& \frac{\partial \phi_i}{ \partial y_n}[e_{y_j}]_{x_n}    \end{bmatrix} ,$$
+
+$$\nabla  \underline{e_{y_j}} = \begin{bmatrix} \frac{\partial \underline{e_{y_j}}}{ \partial y_1} \\\frac{\partial \underline{e_{y_j}}}{ \partial y_2}  \\ \vdots  \\ \frac{\partial \underline{e_{y_j}}}{ \partial y_n}   \end{bmatrix} =
+\begin{bmatrix}\Gamma^{x_1}_{y_j,y_1} & \Gamma^{x_2}_{y_j,y_1} &  ... & \Gamma^{x_n}_{y_j,y_1}  \\\Gamma^{x_1}_{y_j,y_2} & \Gamma^{x_2}_{y_j,y_2} &  ... & \Gamma^{x_n}_{y_j,y_2} \\ \vdots & \vdots & \ddots& \vdots \\\Gamma^{x_1}_{y_j,y_n} & \Gamma^{x_2}_{y_j,y_n} &  ... & \Gamma^{x_n}_{y_j,y_n}   \end{bmatrix} .$$
+
+Note that when $\underline{y}$ coordinate system is cartesian, $\nabla  \underline{e_{y_j}}=\underline{\underline{0}}$ .
 
 

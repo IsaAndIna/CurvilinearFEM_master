@@ -6,3 +6,5 @@ articles/*
 ~$*
 Figure/*
 *.pdf
+*.png
+presentation/*
